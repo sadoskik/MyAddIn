@@ -1,17 +1,54 @@
+
+var app = (function () {
+    "use strict";
+
+    var app = {};
+
+    // Common initialization function (to be called from each page)
+    app.initialize = function () {
+        $('body').append(
+            '<div id="notification-message">' +
+                '<div class="padding ms-font-m">' +
+                    '<div id="notification-message-close"></div>' +
+                    '<div id="notification-message-header"></div>' +
+                    '<div id="notification-message-body"></div>' +
+                '</div>' +
+            '</div>');
+
+        $('#notification-message-close').click(function () {
+            $('#notification-message').hide();
+        });
+
+
+        // After initialization, expose a common notification function
+        app.showNotification = function (header, text) {
+            $('#notification-message-header').text(header);
+            $('#notification-message-body').text(text);
+            $('#notification-message').slideDown('fast');
+        };
+    };
+
+    return app;
+})();
+
 Office.initialize = function(reason){
+  $(document).ready(function () {
+            
+            app.initialize();
+            
+        });
 }
 
 function forward(){
   "use strict";
 
     // The Office initialize function must be run each time a new page is loaded
-    var app = require('/app.js');
-    app.initialize();
+
 
     // Variables that we'll use to communicate with EWS
     var item_id;
     var mailbox;
-
+    sendNow();
     // This function handles the click event of the sendNow button.
     // It retrieves the current mail item, so that we can get its itemId property.
     // It also retrieves the mailbox, so that we can make an EWS request
